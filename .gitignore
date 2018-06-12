@@ -2,4 +2,5 @@
 __pycache__/
 tmp/
 data/
-bvlc_alexnet.npy
+*.npy
+*.npz

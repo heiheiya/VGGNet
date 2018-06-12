@@ -24,7 +24,7 @@ def max_pool_layer(input, kh, kw, sh, sw, name, padding='VALID'):
     print_activations(max_pool)
     return max_pool
 
-def full_connected_layer(input, n_out, name, p, b_value =0.0):
+def full_connected_layer(input, n_out, name, p, b_value =0.0, relu=True):
     shape = input.get_shape().as_list()
     dim = 1
     for d in range(len(shape)-1):
@@ -35,7 +35,10 @@ def full_connected_layer(input, n_out, name, p, b_value =0.0):
         weights = tf.get_variable(name="weights", shape=[n_in, n_out], dtype=tf.float32, initializer=tf.contrib.layers.xavier_initializer())
         biases = tf.get_variable(name="biases", shape=[n_out], dtype=tf.float32, initializer=tf.constant_initializer(b_value), trainable=True)
 
-        fc = tf.nn.relu_layer(x, weights, biases, name=scope.name)
+        if relu == True:
+            fc = tf.nn.relu_layer(x, weights, biases, name=scope.name)
+        else:
+            fc = tf.nn.bias_add(tf.matmul(input, weights), biases)
 
         p += [weights, biases]
         print_activations(fc)

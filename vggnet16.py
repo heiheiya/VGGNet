@@ -2,7 +2,7 @@ import tensorflow as tf
 import numpy as np
 import util
 
-class VGGNet19(object):
+class VGGNet16(object):
     def __init__(self, x, keep_prob, num_classes, batch_size, image_size, channels):
         self.X = x
         self.NUM_CLASSES = num_classes
@@ -27,20 +27,17 @@ class VGGNet19(object):
         conv3_1 = util.conv_layer(pool2, kh=3, kw=3, n_out=256, sh=1, sw=1, name='conv3_1', p=self.p, padding='SAME')
         conv3_2 = util.conv_layer(conv3_1, kh=3, kw=3, n_out=256, sh=1, sw=1, name='conv3_2', p=self.p, padding='SAME')
         conv3_3 = util.conv_layer(conv3_2, kh=3, kw=3, n_out=256, sh=1, sw=1, name='conv3_3', p=self.p, padding='SAME')
-        conv3_4 = util.conv_layer(conv3_3, kh=3, kw=3, n_out=256, sh=1, sw=1, name='conv3_4', p=self.p, padding='SAME')
-        pool3 = util.max_pool_layer(conv3_4, kh=2, kw=2, sh=2, sw=2, name='pool3')
+        pool3 = util.max_pool_layer(conv3_3, kh=2, kw=2, sh=2, sw=2, name='pool3')
 
         conv4_1 = util.conv_layer(pool3, kh=3, kw=3, n_out=512, sh=1, sw=1, name='conv4_1', p=self.p, padding='SAME')
         conv4_2 = util.conv_layer(conv4_1, kh=3, kw=3, n_out=512, sh=1, sw=1, name='conv4_2', p=self.p, padding='SAME')
         conv4_3 = util.conv_layer(conv4_2, kh=3, kw=3, n_out=512, sh=1, sw=1, name='conv4_3', p=self.p, padding='SAME')
-        conv4_4 = util.conv_layer(conv4_3, kh=3, kw=3, n_out=512, sh=1, sw=1, name='conv4_4', p=self.p, padding='SAME')
-        pool4 = util.max_pool_layer(conv4_4, kh=2, kw=2, sh=2, sw=2, name='pool4')
+        pool4 = util.max_pool_layer(conv4_3, kh=2, kw=2, sh=2, sw=2, name='pool4')
 
         conv5_1 = util.conv_layer(pool4, kh=3, kw=3, n_out=512, sh=1, sw=1, name='conv5_1', p=self.p, padding='SAME')
         conv5_2 = util.conv_layer(conv5_1, kh=3, kw=3, n_out=512, sh=1, sw=1, name='conv5_2', p=self.p, padding='SAME')
         conv5_3 = util.conv_layer(conv5_2, kh=3, kw=3, n_out=512, sh=1, sw=1, name='conv5_3', p=self.p, padding='SAME')
-        conv5_4 = util.conv_layer(conv5_3, kh=3, kw=3, n_out=512, sh=1, sw=1, name='conv5_4', p=self.p, padding='SAME')
-        pool5 = util.max_pool_layer(conv5_4, kh=2, kw=2, sh=2, sw=2, name='pool5')
+        pool5 = util.max_pool_layer(conv5_3, kh=2, kw=2, sh=2, sw=2, name='pool5')
 
         fc6 = util.full_connected_layer(pool5, n_out=4096, name='fc6', p=self.p)
         fc6_dropout = util.dropout(fc6, self.KEEP_PROB, name='fc6_drop')
