@@ -45,6 +45,13 @@ class VGGNet16(object):
         fc7 = util.full_connected_layer(fc6_dropout, n_out=4096, name='fc7', p=self.p)
         fc7_dropout = util.dropout(fc7, self.KEEP_PROB, name='fc7_drop')
 
-        self.fc8 = util.full_connected_layer(fc7_dropout, self.NUM_CLASSES, name='fc8', p=self.p, relu=False)
+        self.fc8 = util.full_connected_layer(fc7_dropout, self.NUM_CLASSES, name='fc8', p=self.p)
         self.softmax = tf.nn.softmax(self.fc8)
         self.predictions = tf.argmax(self.softmax, 1)
+
+    def load_weights(self, weight_file, sess):
+        weights = np.load(weight_file)
+        keys = sorted(weights.keys())
+        for i, k in enumerate(keys):
+            sess.run(self.p[i].assign(weights[k]))
+        print("------------all done--------------")

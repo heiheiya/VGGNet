@@ -12,7 +12,7 @@ def conv_layer(input, kh, kw, n_out, sh, sw, name, p, b_value=0.0, padding='VALI
 
         conv = tf.nn.conv2d(input=input, filter=filter, strides=[1, sh, sw, 1], padding=padding)
 
-        bias = tf.reshape(tf.nn.bias_add(conv, biases), conv.get_shape().as_list())
+        bias = tf.nn.bias_add(conv, biases)
         relu = tf.nn.relu(bias, name=scope.name)
         p += [filter, biases]
         print_activations(relu)
@@ -24,7 +24,7 @@ def max_pool_layer(input, kh, kw, sh, sw, name, padding='VALID'):
     print_activations(max_pool)
     return max_pool
 
-def full_connected_layer(input, n_out, name, p, b_value =0.0, relu=True):
+def full_connected_layer(input, n_out, name, p, b_value =0.0):
     shape = input.get_shape().as_list()
     dim = 1
     for d in range(len(shape)-1):
@@ -35,10 +35,7 @@ def full_connected_layer(input, n_out, name, p, b_value =0.0, relu=True):
         weights = tf.get_variable(name="weights", shape=[n_in, n_out], dtype=tf.float32, initializer=tf.contrib.layers.xavier_initializer())
         biases = tf.get_variable(name="biases", shape=[n_out], dtype=tf.float32, initializer=tf.constant_initializer(b_value), trainable=True)
 
-        if relu == True:
-            fc = tf.nn.relu_layer(x, weights, biases, name=scope.name)
-        else:
-            fc = tf.nn.bias_add(tf.matmul(input, weights), biases)
+        fc = tf.nn.relu_layer(x, weights, biases, name=scope.name)
 
         p += [weights, biases]
         print_activations(fc)

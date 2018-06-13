@@ -249,9 +249,10 @@ class vgg16:
         weights = np.load(weight_file)
         keys = sorted(weights.keys())
         for i, k in enumerate(keys):
-            print i, k, np.shape(weights[k])
+            print(i, k, np.shape(weights[k]))
             sess.run(self.parameters[i].assign(weights[k]))
 
+'''
 if __name__ == '__main__':
     sess = tf.Session()
     imgs = tf.placeholder(tf.float32, [None, 224, 224, 3])
@@ -264,3 +265,4 @@ if __name__ == '__main__':
     preds = (np.argsort(prob)[::-1])[0:5]
     for p in preds:
         print class_names[p], prob[p]
+'''
